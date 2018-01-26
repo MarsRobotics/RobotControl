@@ -3,15 +3,14 @@ class State():
     def __init__(self, name, nextState):
         self.name = name
         self.nextState = nextState
+        self.transitionReady = False
 
     #implementation for each state: overridden
     def run(self):
         print(self.name)
         print("\n>run() not implemented\n")
 
-    def setNextState(self, name):
-        self.nextState = name
-    
-    def getNextState(self):
-        return self.nextState
+    #implementation for each state: overridden
+    def transition(self):
+        return False
 

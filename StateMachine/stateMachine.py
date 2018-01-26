@@ -1,7 +1,8 @@
 from states.startState import StartState
 from states.scanDigState import ScanDigState
 from states.scanDumpState import ScanDumpState
-from states.moveState import MoveState
+from states.moveDigState import MoveDigState
+from states.moveDumpState import MoveDumpState
 from states.digState import DigState
 from states.dumpState import DumpState
 
@@ -14,7 +15,8 @@ class StateMachine():
         self.startState = StartState()
         self.scanDigState = ScanDigState()
         self.scanDumpState = ScanDumpState()
-        self.moveState = MoveState()
+        self.moveDigState = MoveDigState()
+        self.moveDumpState = MoveDumpState()
         self.dumpState = DumpState()
         self.digState = DigState()
 
