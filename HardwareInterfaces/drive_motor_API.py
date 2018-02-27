@@ -34,3 +34,9 @@ class DriveMotorAPI:
     def turn(self, direction):
         if(direction == self.CLOCKWISE or direction == self.COUNTERCLOCKWISE):
             self.dirPublisher.publish(direction)
+
+if __name__ == '__main__':
+    try:
+        d = DriveMotorAPI()
+    except rospy.ROSInterruptException:
+        pass
