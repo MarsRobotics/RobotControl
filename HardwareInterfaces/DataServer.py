@@ -12,7 +12,7 @@ from command2ros.msg import MovementCommand
 
 roslib.load_manifest('command2ros')
 
-sendRate = 10 #Hz
+sendRate = 10 #Hz #**sendRate = rospy.Rate(10) #Hz
 
 """
 DataDistributor     Create threads to control network connections
@@ -21,7 +21,7 @@ DataDistributor     Create threads to control network connections
 class DataDistributor(threading.Thread):
 
     def __init__(self):
-        self.data = RobotData()
+        self.data = MovementData()
         threading.Thread.__init__(self)
         return
 
@@ -58,13 +58,13 @@ class DataServer(threading.Thread):
         try:
             sendTime = 0
 
-            while True:
+            while True: #**not rospy.is_shutdown():
                 self.socket.setblocking(1)
 
                 #send data to the client if time has passed
-                if sendTime < time.time():
+                if sendTime < time.time(): #**delete
                     sendData(self.socket, self.distributor.data)
-                    sendTime = time.time() + 1/float(sendRate)
+                    sendTime = time.time() + 1/float(sendRate) #**sendRate.sleep()
 
                 try:
                     self.socket.setblocking(0)

@@ -32,9 +32,7 @@ def sendData(socket, data):
     # Send the data string
     socket.send(length)
     socket.send(data_string)
-
     return
-
 
 ##
 # receiveData
