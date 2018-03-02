@@ -6,7 +6,8 @@ import time
 import socket
 import threading
 
-from MovementData import MovementData, MovementControlData
+from CommandRobot import CommandRobot
+from MovementData import MovementData
 from DataTransferProtocol import receiveData, sendData
 from command2ros.msg import MovementCommand
 
@@ -27,15 +28,14 @@ class DataDistributor(threading.Thread):
 
     #set up socket to receive incoming requests
     def run(self):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        serverAddress = ("192.168.1.45", 10000) #George
-        s.bind(serverAddress)
-        s.listen(1) #backlog is 1
+        server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        server.bind(("192.168.1.45", 10000)) #George, localhost to make faster?
+        server.listen(1) #backlog is 1
 
         #accept connections and spawn thread to handle
         #until server closes
         while True:
-            clientSocket, address = s.accept()
+            (clientSocket, address) = server.accept()
             cs = DataServer(clientSocket, self, address)
             cs.run()
         return
@@ -61,7 +61,7 @@ class DataServer(threading.Thread):
             while True: #**not rospy.is_shutdown():
                 self.socket.setblocking(1)
 
-                #send data to the client if time has passed
+                #send last movement data to the client if time has passed
                 if sendTime < time.time(): #**delete
                     sendData(self.socket, self.distributor.data)
                     sendTime = time.time() + 1/float(sendRate) #**sendRate.sleep()
@@ -81,7 +81,7 @@ class DataServer(threading.Thread):
                     continue
         except socket.error: 
             #lost connection, stop robot
-            newCommand = MovementControlData()
+            newCommand = MovementData()
             newCommand.eStop = True
             commandQueue.insert(0, newCommand)
             return
@@ -98,6 +98,10 @@ dataDist.start()
 pub = rospy.Publisher('MovementCommand', queue_size=10)
 rospy.init_node('command2ros', anonymous=True)
 
+#start receiving movement commands
+cr = CommandRobot()
+cr.createConnection()
+
 #publish commands to arduino
 while True:
     if len(commandQueue) > 0:
@@ -107,7 +111,6 @@ while True:
         mc = MovementCommand()
         mc.driveDist = command.driveDist #distance to drive meters  
         mc.turn = command.turn           #degrees for articulation motors
-        mc.packout = command.packout     #starting sequence, wheels roll out
         mc.packin = command.packin       #ending sequence, wheels tucked under
         mc.eStop = command.eStop         #stop robot TODO:eStop and stop?
         pub.publish(mc)

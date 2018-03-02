@@ -3,6 +3,7 @@ from command2ros.msg import MovementCommand
 
 def callback(data):
     #print message to screen, write to node's log file, write to rosout
+    #type rqt_console to see rosout
     rospy.loginfo(rospy.get_caller_id() + ": ", data.data)
 
 def listener():
