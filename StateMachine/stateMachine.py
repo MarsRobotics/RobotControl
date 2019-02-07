@@ -1,8 +1,6 @@
 from states.startState import StartState
-from states.scanDigState import ScanDigState
-from states.scanDumpState import ScanDumpState
-from states.moveDigState import MoveDigState
-from states.moveDumpState import MoveDumpState
+from states.driveToDigState import driveToDigState
+from states.driveToReturnState import driveToReturnState
 from states.digState import DigState
 from states.dumpState import DumpState
 
@@ -10,15 +8,18 @@ from states.dumpState import DumpState
 class StateMachine():
 
     #init robot
-    def __init__(self): 
-        #init all states       
+    def __init__(self):
+        #init all states
         self.startState = StartState()
-        self.scanDigState = ScanDigState()
-        self.scanDumpState = ScanDumpState()
-        self.moveDigState = MoveDigState()
-        self.moveDumpState = MoveDumpState()
-        self.dumpState = DumpState()
+        #self.scanDigState = ScanDigState()
+        #self.scanDumpState = ScanDumpState()
+        #self.moveDigState = MoveDigState()
+        #self.moveDumpState = MoveDumpState()
+        self.driveToDigState = DriveToDigState()
         self.digState = DigState()
+        self.driveToReturnState = DriveToReturnState()
+        self.dumpState = DumpState()
+        # 
 
         #set current state
         self.currentState = self.startState
@@ -28,7 +29,8 @@ class StateMachine():
 
     #control program
     def main(self):
-        print("\n>main() not implemented\n")
+        print("\n>Starting Main\n")
+
 
 #PROGRAM ENTRY
 if __name__ == "__main__":

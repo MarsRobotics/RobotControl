@@ -30,7 +30,8 @@ class DriveMotorAPI:
     def stop(self):
         self.speedPublisher.publish(0)
 
-    #set direction to cw or ccw
+    #set direction to cw or ccwxe
+    #TODO: check validity of interpretation and check "turn" vs "spin" <- in place or while moving
     def turn(self, direction):
         if(direction == self.CLOCKWISE or direction == self.COUNTERCLOCKWISE):
             self.dirPublisher.publish(direction)

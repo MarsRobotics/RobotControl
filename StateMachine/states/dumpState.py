@@ -1,9 +1,9 @@
-from states.state import State
+from .state import State
 
 class DumpState(State):
     #init attributes of state
     def __init__(self):
-        super().__init__("Dump", "ScanDig")
+        super().__init__("Dump", "Start")
         self.transitionReady = False
 
     #implementation for each state: overridden
@@ -13,7 +13,7 @@ class DumpState(State):
         #always begin with no transition
         self.transitionReady = False
 
-        #dump material
+        #run belt to dump material for time x
 
         self.transitionReady = True
 
