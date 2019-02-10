@@ -1,6 +1,0 @@
-CS
--test if ROS publisher is working
--test if ROS subscriber is working
--implement arduino subscriber
- +create node handle
--write program to connect to DataDistributor and start DataServer

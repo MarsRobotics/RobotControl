@@ -1,4 +1,0 @@
-float32 driveDist
-int32 turn
-book packin
-bool eStop

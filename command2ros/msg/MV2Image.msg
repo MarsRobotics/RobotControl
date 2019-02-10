@@ -1,0 +1,27 @@
+int32 xCoordMainBeaconCenter
+int32 yCoordMainBeaconCenter
+int32 xCoordMainBeaconLB
+int32 yCoordMainBeaconLB
+int32 xCoordMainBeaconUB
+int32 yCoordMainBeaconUB
+
+int32 xCoordSternBeaconCenter
+int32 yCoordSternBeaconCenter
+int32 xCoordSternBeaconLB
+int32 yCoordSternBeaconLB
+int32 xCoordSternBeaconUB
+int32 yCoordSternBeaconUB
+
+int32 xCoordBowBeaconCenter
+int32 yCoordBowBeaconCenter
+int32 xCoordBowBeaconLB
+int32 yCoordBowBeaconLB
+int32 xCoordBowBeaconUB
+int32 yCoordBowBeaconUB
+
+int32 xCoordFrontBeaconCenter
+int32 yCoordFrontBeaconCenter
+int32 xCoordFrontBeaconLB
+int32 yCoordFrontBeaconLB
+int32 xCoordFrontBeaconUB
+int32 yCoordFrontBeaconUB
