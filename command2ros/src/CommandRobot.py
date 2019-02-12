@@ -24,10 +24,21 @@ class CommandRobot:
 
     def __init__(self):
         self.HOST = "127.0.0.1"
-        self.PORT = 10000
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((self.HOST, self.PORT))
-        self.sock = s
+        MOVEPORT = 1000
+        DIGPORT = 1222
+        DUMPPORT = 1333
+
+        #set up all ports
+        smove = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sdig= socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sdump = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        smove.connect((self.HOST, self.MOVEPORT))
+        sdig.connect((self.HOST, self.DIGPORT))
+        sdump.connect((self.HOST, self.DUMPPORT))
+        self.sockMove = smove
+        self.sockDig = sdig
+        self.sockDump = sdump
+
         self.lastData = MovementData()
         self.currentData = MovementData()
         self.lastDigData = DigData()
@@ -45,15 +56,23 @@ class CommandRobot:
     def sendCommand(self, data):
         # send new command data
         if (data == 'move'):
-            sendData(self.sock, self.currentData)
+            sendData(self.sockmove, self.currentData)
         if (data == 'dig'):
-            sendData(self.sock, self.currentDigData)
+            sendData(self.sockdig, self.currentDigData)
         if (data =='dump'):
-            sendData(self.sock, self.currentDumpData)
+            sendData(self.sockdump, self.currentDumpData)
         time.sleep(2)
+
+        #shut down all sockets
         if self.currentData.endProgram:
-            self.sock.shutdown(socket.SHUT_RDWR)
-            self.sock.close()
+            self.sockMove.shutdown(socket.SHUT_RDWR)
+            self.sockMove.close()
+
+            self.sockDig.shutdown(socket.SHUT_RDWR)
+            self.sockDig.close()
+
+            self.sockDump.shutdown(socket.SHUT_RDWR)
+            self.sockDump.close()
             print("command robot is closed")
 
     # assign a new command for the robot

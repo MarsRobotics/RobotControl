@@ -17,11 +17,16 @@ DataDistributor     Receive new commands and create service to
                     the arduino is ready to receive commands
 """
 
-
 class DataDistributor(threading.Thread):
 
-    def __init__(self, pub):
+    #constants
+    MOVEPORT = 1000
+    DIGPORT = 1222
+    DUMPPORT = 1333
+
+    def __init__(self, pub, messagetype):
         self.data = MovementData()
+        self.messagetype = messagetype
         self.pub = pub
         threading.Thread.__init__(self)
         self._stop_event = threading.Event()
@@ -30,11 +35,16 @@ class DataDistributor(threading.Thread):
     # create connection to receive commands
     def run(self):
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server.bind(("127.0.0.1", 10000))  # George
+        if self.messagetype == 'move':
+            server.bind(("127.0.0.1", self.MOVEPORT))
+        elif self.messagetype == 'dig':
+            server.bind(("127.0.0.1", self.DIGPORT))
+        elif self.messagetype == 'dump':
+            server.bind(("127.0.0.1", self.DUMPPORT))
         server.listen(5)  # accept only one connection
 
         # begin publisher mechanism
-        dataServer = DataServer(self.pub)
+        dataServer = DataServer(self.pub, self.messagetype)
         dataServer.start()
 
         # create connection to receive commands
