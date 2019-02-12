@@ -2,14 +2,17 @@
 
 import rospy
 from command2ros.msg import MovementFeedback
+from command2ros.msg import ImageProc
 from MovementFeedbackData import MovementFeedbackData
+from ImageProcData import ImageProcData
 import threading
 
 class FeedbackHandler(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self)
-        self.messageQueue = []
+        self.movementFBmessageQueue = []
+        self.imageProcmessageQueue = []
         return
 
     def run(self):
@@ -21,13 +24,43 @@ class FeedbackHandler(threading.Thread):
         feedback.messageID = data.messageID
         feedback.serialID = data.serialID
         feedback.msg = data.msg
-        self.messageQueue.append(feedback)
+        self.movementFBmessageQueue.append(feedback)
 
-    def mv2ImageCallback(self, data):
-        x = True #so it compiles
-        #handle returned image data here
+    def imageProcCallback(self, data):
+        imageData = ImageProcData()
+        imageData.serialID = 0
+
+        imageData.xCoordMainBeaconCenter = data.xCoordMainBeaconCenter
+        imageData.yCoordMainBeaconCenter = data.yCoordMainBeaconCenter
+        imageData.xCoordMainBeaconLB = data.xCoordMainBeaconLB
+        imageData.yCoordMainBeaconLB = data.yCoordMainBeaconLB
+        imageData.xCoordMainBeaconUB = data.xCoordMainBeaconUP
+        imageData.yCoordMainBeaconUB = data.yCoordMainBeaconUP
+
+        imageData.xCoordSternBeaconCenter = data.xCoordSternBeaconCenter
+        imageData.yCoordSternBeaconCenter = data.yCordSternBeaconCenter
+        imageData.xCoordSternBeaconLB = data.xCoordSternBeaconLB
+        imageData.yCoordSternBeaconLB = data.yCoordSternBeaconLB
+        imageData.xCoordSternBeaconUB = data.xCoordSternBeaconUP
+        imageData.yCoordSternBeaconUB = data.yCoordSternBeaconUP
+
+        imageData.xCoordBowBeaconCenter = data.xCoordBowBeaconCenter
+        imageData.yCoordBowBeaconCenter = data.yCoordBowBeaconCenter
+        imageData.xCoordBowBeaconLB = data.xCoordBowBeaconLB
+        imageData.yCoordBowBeaconLB = data.yCoordBowBeaconLB
+        imageData.xCoordBowBeaconUB = data.xCoordBowBeaconUP
+        imageData.yCoordBowBeaconUB = data.yCoordBowBeaconUP
+
+        imageData.xCoordFrontBeaconCenter = data.xCoordFrontBeaconCenter
+        imageData.yCoordFrontBeaconCenter = data.yCoordFrontBeaconCenter
+        imageData.xCoordFrontBeaconLB = data.xCoordFrontBeaconLB
+        imageData.yCoordFrontBeaconLB = data.yCoordFrontBeaconLB
+        imageData.xCoordFrontBeaconUB = data.xCoordFrontBeaconUP
+        imageData.yCoordFrontBeaconUB = data.yCoordFrontBeaconUP
+
+        self.imageProcmessageQueue.append(imageData)
 
     def listener(self):
         rospy.Subscriber("MovementFeedback", MovementFeedback, self.movementFeedbackCallback)
-        #add Subscriber for camera data feedback
+        rospy.Subscriber("ImageProc", ImageProc, self.imageProcCallback)
         rospy.spin()

@@ -1,3 +1,5 @@
+int32 serialID
+
 int32 xCoordMainBeaconCenter
 int32 yCoordMainBeaconCenter
 int32 xCoordMainBeaconLB
