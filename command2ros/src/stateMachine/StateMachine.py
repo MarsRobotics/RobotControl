@@ -58,13 +58,15 @@ class StateMachine():
         end = False
         moveID = 1
         print("robot is starting")
-        movementPub = self.rosSetup()
+        movementPub, digPub, dumpPub = self.rosSetup()
         print("ros has been set up")
         feedbackHandler = FeedbackHandler()
         feedbackHandler.start()
         print("feedback handler set up")
-        dataDistributer = self.dataDistributorSetup(movementPub)
-        print("data distributor to send commands is set up")
+        movementDataDistributer = self.dataDistributorSetup(movementPub, 'move')
+        digDataDistributer = self.dataDistributorSetup(digPub, 'dig')
+        dumpDataDistributer = self.dataDistributorSetup(dumpPub,'dump')
+        print("data distributors to send commands set up")
 
         # use to update the next command and send to arduino mega
         cr = CommandRobot()
@@ -135,7 +137,7 @@ class StateMachine():
         dumpPub = rospy.Publisher('DumpCommand', DumpCommand, queue_size=10)
         rospy.init_node('command2ros', anonymous=True)
 
-        return (movementPub)
+        return (movementPub, digPub, dumpPub)
 
 
 # PROGRAM ENTRY

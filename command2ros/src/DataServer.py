@@ -92,8 +92,9 @@ DataServer      Stores all commands in a queue, publishes when Arduino is ready
 
 class DataServer(threading.Thread):
 
-    def __init__(self, pub):
+    def __init__(self, pub, messagetype):
         self.pub = pub
+        self.messagetype = messagetype
         self.commandQueue = []
         threading.Thread.__init__(self)
         self._stop_event = threading.Event()
@@ -113,7 +114,7 @@ class DataServer(threading.Thread):
         return
 
     # publish next command
-    def run(self):
+    def run(self, messagetype):
         while True:
             # let thread terminate
             if self._stop_event.is_set():
@@ -123,14 +124,30 @@ class DataServer(threading.Thread):
             # publish as long as there is a command to publish
             if len(self.commandQueue) > 0:
                 command = self.commandQueue.pop(0)
+                self.publish(command)
 
-                # update to the next command
-                self.pub.publish(
-                    serialID=command.serialID,
-                    driveDirection=command.driveDirection,
-                    packin=command.packin,
-                    packout=command.packout,
-                    stop=command.stop,
-                    pause=command.pause)
+    def publish(self, command):
+        if self.messagetype == 'move':
+            self.pub.publish(
+                serialID=command.serialID,
+                driveDirection=command.driveDirection,
+                packin=command.packin,
+                packout=command.packout,
+                stop=command.stop,
+                pause=command.pause
+            )
 
+        elif self.messagetype == 'dig':
+            self.pub.publish(
+                serialID=command.serialID,
+                digDirection=command.digDirection,
+                stop=command.stop
+            )
 
+        elif self.messagetype == 'dump':
+            self.pub.publish(
+                serialID=command.serialId,
+                beltDirection=command.beltDirection,
+                speed=command.speed,
+                stop=command.stop
+            )
