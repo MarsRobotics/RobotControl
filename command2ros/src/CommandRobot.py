@@ -8,10 +8,10 @@ except ImportError:
 import time
 import socket
 from socket import error as socketError
-from MovementData import MovementData
-from DigData import DigData
-from DumpData import DumpData
-from DataTransferProtocol import receiveData, sendData
+from .MovementData import MovementData
+from .DigData import DigData
+from .DumpData import DumpData
+from .DataTransferProtocol import receiveData, sendData
 
 BODY_SIZE_STRING_SIZE = 10
 
@@ -24,9 +24,9 @@ class CommandRobot:
 
     def __init__(self):
         self.HOST = "127.0.0.1"
-        MOVEPORT = 1000
-        DIGPORT = 1222
-        DUMPPORT = 1333
+        self.MOVEPORT = 1000
+        self.DIGPORT = 1222
+        self.DUMPPORT = 1333
 
         #set up all ports
         smove = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -55,11 +55,11 @@ class CommandRobot:
     # communication with the DataDistributor
     def sendCommand(self, data):
         # send new command data
-        if (data == 'move'):
+        if data == 'move':
             sendData(self.sockmove, self.currentData)
-        if (data == 'dig'):
+        if data == 'dig':
             sendData(self.sockdig, self.currentDigData)
-        if (data =='dump'):
+        if data == 'dump':
             sendData(self.sockdump, self.currentDumpData)
         time.sleep(2)
 
@@ -76,7 +76,7 @@ class CommandRobot:
             print("command robot is closed")
 
     # assign a new command for the robot
-    def setMovmentCommand(self, command):
+    def setMovementCommand(self, command):
         self.currentData.driveDirection = command.driveDirection
         self.currentData.packin = command.packin
         self.currentData.packout = command.packout

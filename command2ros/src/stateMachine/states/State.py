@@ -1,4 +1,5 @@
-class State():
+class State:
+
     #init attributes of state
     def __init__(self, name, nextState):
         self.name = name

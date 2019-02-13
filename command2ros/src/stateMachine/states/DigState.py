@@ -1,5 +1,5 @@
-from .state import State
-from DigData import DigData
+from command2ros.src.stateMachine.states.State import State
+from command2ros.src.DigData import DigData
 
 class DigState(State):
     #init attributes of state

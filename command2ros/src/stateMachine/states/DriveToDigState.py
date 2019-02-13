@@ -1,8 +1,8 @@
-from states.state import State
-from MovementData import MovementData
+from command2ros.src.stateMachine.states.State import State
+from command2ros.src.MovementData import MovementData
 
 
-class DriveToDig(State):
+class DriveToDigState(State):
     # init attributes of state
     def __init__(self):
         super().__init__("DriveToDig", "Dig")

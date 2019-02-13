@@ -1,5 +1,5 @@
-from .state import State
-from DumpData import DumpData
+from command2ros.src.stateMachine.states import State
+from command2ros.src.DumpData import DumpData
 
 class DumpState(State):
     #init attributes of state

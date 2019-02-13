@@ -2,7 +2,7 @@ from .ManualData import ManualData
 from pynput.keyboard import Key, Listener, KeyCode
 import socket
 import sys
-from HardwareInterfaces.DataTransferProtocol import sendData, receiveData
+from command2ros.src.DataTransferProtocol import sendData, receiveData
 import time
 
 '''

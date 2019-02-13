@@ -7,11 +7,11 @@ import rospy
 import roslib
 roslib.load_manifest('command2ros')
 
-from command2ros.msg import DigCommand
-from command2ros.msg import DumpCommand
-from command2ros.msg import MovementCommand
-from command2ros.msg import MovementFeedback
-from command2ros.msg import MV2Image
+import command2ros.msg.DigCommand as DigCommand
+import command2ros.msg.DumpCommand as DumpCommand
+import command2ros.msg.MovementCommand as MovementCommand
+import command2ros.msg.MovementFeedback as MovementFeedback
+import command2ros.msg.ImageProc as ImageProc
 
 from .states.StartState import StartState
 from .states.DriveToDigState import DriveToDigState
@@ -22,13 +22,9 @@ from .states.DriveToDigState import DriveToDigState
 from .states.DriveToReturnState import DriveToReturnState
 from .states.ManualMoveState import ManualMoveState
 
-from DriveCommandAPI import DriveCommandAPI
-from DigCommandAPI import DigCommandAPI
-from DumpCommandAPI import DumpCommandAPI
-
-from DataServer import DataDistributor
-from CommandRobot import CommandRobot
-from FeedbackHandler import FeedbackHandler
+from command2ros.src.DataServer import DataDistributor
+from command2ros.src.CommandRobot import CommandRobot
+from command2ros.src.FeedbackHandler import FeedbackHandler
 
 #track current state and program
 class StateMachine():

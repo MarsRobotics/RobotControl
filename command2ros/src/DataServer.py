@@ -7,9 +7,9 @@ import socket
 import threading
 
 # from CommandRobot import CommandRobot
-from MovementData import MovementData
-from DataTransferProtocol import receiveData, sendData
-from command2ros.msg import MovementCommand
+from .MovementData import MovementData
+from .DataTransferProtocol import receiveData, sendData
+import command2ros.msg.MovementCommand as MovementCommand
 
 """
 DataDistributor     Receive new commands and create service to 

@@ -1,13 +1,10 @@
 import matplotlib
 
 matplotlib.use("agg")
-from states.State import State
-from LidarCommands import raspi_threads as rasp
-from LidarCommands.constants import *
-from DataTransferProtocol import receiveData, sendData
-from MovementData import MovementData
-from ManualData import ManualData
-from ScanData import ScanData
+from command2ros.src.stateMachine.states.State import State
+from command2ros.src.DataTransferProtocol import receiveData, sendData
+from command2ros.src.MovementData import MovementData
+from manual.ManualData import ManualData
 import socket
 import time
 import matplotlib.pyplot as plt
@@ -41,7 +38,8 @@ class ManualMoveState(State):
     moveID  ID number for the message to be published to the MovementCommand topic
     '''
 
-    def run(self, movementPub, digPub, scanID, moveID):
+    #TODO fix implementation to make consistent
+    def run(self, movementPub, digPub, moveID):
         try:
             self.sock.setblocking(1)
             manualCommand = receiveData(self.sock)
@@ -80,35 +78,7 @@ class ManualMoveState(State):
                 self.sock.close()
                 print("manual state closed by switch to autonomous")
             # scan LiDAR
-            elif (manualCommand.forwardScan or manualCommand.backwardScan):
-                if manualCommand.forwardScan:
-                    # tell motor to get into position and begin to move for scanning
-                    scanID, z, distance = rasp.scan(self.pub, True, scanID)
 
-                    print("distance")
-                    filename = "LiDAR_Scans/forward_LiDAR_distances_" + str(scanID) + ".txt"
-                    with open(filename, "w") as f:
-                        for d in distance:
-                            p = str(d) + ", "
-                            f.write(p)
-                    print("done writing LiDAR data")
-
-                    self.view(z, distance)
-                elif manualCommand.backwardScan:
-                    # tell motor to get into position and begin to move for scanning
-                    scanID, z, distance = rasp.scan(self.pub, False, scanID)
-
-                    print("distance")
-                    filename = "LiDAR_Scans/backwards_LiDAR_distances_" + str(scanID) + ".txt"
-                    with open(filename, "w") as f:
-                        for d in distance:
-                            p = str(d) + ", "
-                            f.write(p)
-                    print("done writing LiDAR data")
-
-                    self.view(z, distance)
-                scanID += 1
-                # command robot to move
             else:
                 c = MovementData()
                 c.manual = True
@@ -141,18 +111,7 @@ class ManualMoveState(State):
                     pause=c.pause,
                     cancel=c.cancel,
                     raiseForDig=c.raiseForDig)
-                '''
-                cam = manualCommand.cameraNum
-                ret = None
-                frame = None
-                if cam == 2:
-                    ret, frame = backCam.read()#capture a frame from the back cam
-                elif cam == 1:
-                    ret, frame = digCam.read()
-                else:            
-                    ret, frame = frontCam.read()#default is the front 
-                sendData(self.sock, frame)
-                '''
+
                 # digPub.publish(manualCommand.raiseForDig)
         # socket was shut down unexpectedly, shut down robot
         except socket.error:

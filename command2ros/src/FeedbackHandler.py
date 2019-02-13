@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 import rospy
-from command2ros.msg import MovementFeedback
-from command2ros.msg import ImageProc
-from MovementFeedbackData import MovementFeedbackData
-from ImageProcData import ImageProcData
+import command2ros.msg.MovementFeedback as MovementFeedback
+import command2ros.msg.ImageProc as ImageProc
+import command2ros.msg.MovementFeedbackData as MovementFeedbackData
+import command2ros.msg.ImageProcData as ImageProcData
 import threading
 
 class FeedbackHandler(threading.Thread):
