@@ -144,7 +144,8 @@ class DataServer(threading.Thread):
                 packin=command.packin,
                 packout=command.packout,
                 stop=command.stop,
-                pause=command.pause
+                pause=command.pause,
+                msg=command.msg
             )
 
         elif self.messagetype == 'dig':

@@ -16,7 +16,7 @@ class ManualMoveState(State):
     # init attributes of state
     def __init__(self):
         super().__init__("ManualMoveState", "ManualMoveState")
-        self.HOST = "192.168.1.142"  # laptop IP
+        self.HOST = "10.0.0.77"  # laptop IP
         self.PORT = 20000  # communication port
 
         # connect to laptop (note: laptop program is server so must start laptop program first)
@@ -54,17 +54,12 @@ class ManualMoveState(State):
                 # cr.sendCommand()
                 movementPub.publish(
                     serialID=c.serialID,
-                    manual=c.manual,
-                    manualDrive=c.manualDrive,
-                    manualTurn=c.manualTurn,
-                    driveDist=c.driveDist,
-                    turn=c.turn,
-                    dig=c.dig,
-                    dump=c.dump,
+                    driveDirection=c.driveDirection,
+                    stop=c.stop,
                     packin=c.packin,
-                    eStop=c.eStop,
+                    packOut=c.packOut,
                     pause=c.pause,
-                    cancel=c.cancel)
+                    msg=c.msg)
                 print("send command to end program")
                 time.sleep(2)
                 self.endProgram = True
@@ -81,17 +76,13 @@ class ManualMoveState(State):
 
             else:
                 c = MovementData()
-                c.manual = True
-                c.manualDrive = manualCommand.manualDrive
-                c.manualTurn = manualCommand.manualTurn
-                c.dig = manualCommand.dig
-                c.dump = manualCommand.dump
+                c.serailID= moveID
+                c.driveDirection = manualCommand.driveDirection
+                c.stop = manualCommand.stop
                 c.packin = manualCommand.packin
-                c.cancel = manualCommand.stop
-                c.serialID = moveID
-                c.driveDist = manualCommand.drive
-                c.turn = manualCommand.turn
-                c.raiseForDig = manualCommand.raiseForDig
+                c.packout = manualCommand.packout
+                c.pause = manualCommand.pause
+                c.msg = manualCommand.msg
                 moveID += 1
 
                 # cr.setCommand(c)
@@ -99,18 +90,12 @@ class ManualMoveState(State):
                 # cr.sendCommand()
                 movementPub.publish(
                     serialID=c.serialID,
-                    manual=c.manual,
-                    manualDrive=c.manualDrive,
-                    manualTurn=c.manualTurn,
-                    driveDist=c.driveDist,
-                    turn=c.turn,
-                    dig=c.dig,
-                    dump=c.dump,
+                    driveDirection=c.driveDirection,
+                    stop=c.stop,
                     packin=c.packin,
-                    eStop=c.eStop,
+                    packOut=c.packOut,
                     pause=c.pause,
-                    cancel=c.cancel,
-                    raiseForDig=c.raiseForDig)
+                    msg=c.msg)
 
                 # digPub.publish(manualCommand.raiseForDig)
         # socket was shut down unexpectedly, shut down robot
@@ -121,17 +106,12 @@ class ManualMoveState(State):
             # cr.sendCommand()
             movementPub.publish(
                 serialID=c.serialID,
-                manual=c.manual,
-                manualDrive=c.manualDrive,
-                manualTurn=c.manualTurn,
-                driveDist=c.driveDist,
-                turn=c.turn,
-                dig=c.dig,
-                dump=c.dump,
+                driveDirection=c.driveDirection,
+                stop=c.stop,
                 packin=c.packin,
-                eStop=c.eStop,
+                packOut=c.packOut,
                 pause=c.pause,
-                cancel=c.cancel)
+                msg=c.msg)
             print("send command to end program")
             time.sleep(2)
             self.endProgram = True
@@ -140,7 +120,7 @@ class ManualMoveState(State):
             print("manual state closed")
             print("Socket error manual command")
 
-        return (scanID, moveID)
+        return (moveID)
 
         # keep publisher for Scan topic
 

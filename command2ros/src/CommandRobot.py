@@ -83,6 +83,7 @@ class CommandRobot:
         self.currentData.stop = command.stop
         self.currentData.pause = command.pause
         self.currentData.serialID = command.serialID
+        self.currentData.msg = command.msg
 
     def setDigCommand(self, command):
         self.digData.serialID = command.serialID

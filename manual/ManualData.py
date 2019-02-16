@@ -9,7 +9,7 @@ class ManualData:
     def __init__(self):
         self.drive = 0
         self.turn = 0
-        self.dig = 0
+        self.dig = 0,
         self.raiseForDig = 0
         self.dump = 0
         self.packin = False  # ending sequence, wheels roll in so tucked under

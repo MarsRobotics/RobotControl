@@ -13,6 +13,7 @@ class MovementData:
         self.packIn = 0
         self.packOut = 0
         self.pause = 0
+        self.msg = ""
         return
 
 

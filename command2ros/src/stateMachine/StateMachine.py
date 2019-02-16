@@ -31,7 +31,7 @@ class StateMachine():
 
     #init robot
     def __init__(self):
-        self.manual = False
+        self.manual = True
 
         #init all states
         self.startState = StartState()

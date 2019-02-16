@@ -10,7 +10,10 @@ sys.path.append(os.path.abspath("/home/emily/Robotics/RobotControl/command2ros/s
 from DataTransferProtocol import sendData #this is fine
 import time
 
+
 '''
+These correspond to testing functions found in ArduinoCode 
+
 Key press       Command
  up              drive forward
  down            drive backwards
